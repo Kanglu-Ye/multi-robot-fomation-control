@@ -2,7 +2,6 @@ function history = run_simulation(cfg)
 
     %% 初始化
     [leaders, followers, topo] = initialize_system(cfg);
-    quad = init_quad_params();
 
     N   = cfg.N;
     dt  = cfg.dt;
@@ -45,9 +44,8 @@ function history = run_simulation(cfg)
             [followers(i).obs, followers(i).d_hat] = ...
                 observer_update(followers(i), u_cmd, cfg, dt);
 
-            % 5) 推进真实动力学
+            % 5) 动力学更新
             followers(i) = update_agent(followers(i), u_cmd, dt);
-            %followers(i) = update_agent_quad(followers(i), u_cmd, dt, quad);
 
             % 记录中间量
             history.u0(:, i, k)    = u0;
