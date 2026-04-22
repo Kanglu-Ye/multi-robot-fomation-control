@@ -1,8 +1,8 @@
 function [obs_new, d_hat] = eso_linear(agent, u_cmd, cfg, dt)
 
-    beta1 = cfg.observer.beta1;
-    beta2 = cfg.observer.beta2;
-    beta3 = cfg.observer.beta3;
+    beta1 = 3 * cfg.observer.linear_omega;
+    beta2 = 3 * cfg.observer.linear_omega ^ 2;
+    beta3 = cfg.observer.linear_omega ^ 3;
 
     % 测量输出：真实位置
     p = agent.p;

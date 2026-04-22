@@ -1,0 +1,14 @@
+# 日志文件
+*.log
+
+# 图片文件（所有常用格式）
+*.png
+*.jpg
+
+# MATLAB 自动生成的文件（你之前需要的）
+*.asv
+*.mat
+*.slxc
+*.slx.backup
+slprj/
+*.fig
