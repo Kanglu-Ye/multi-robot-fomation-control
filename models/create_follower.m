@@ -14,4 +14,7 @@ function follower = create_follower(id, p0, v0, cfg)
     follower.obs.p_hat = p0(:);
     follower.obs.v_hat = v0(:);
     follower.obs.d_hat = zeros(cfg.dim,1);
+
+    % 新增：对所有leader的DESO估计
+    follower.deso = init_deso_state(cfg);
 end

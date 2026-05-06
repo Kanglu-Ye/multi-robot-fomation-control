@@ -21,7 +21,7 @@ function cfg = default_config()
     cfg.formation.delta{2,1} = [ 1;0;0];
 
     %% 观测器参数 'LinearESO', 'FxESO'
-    cfg.observer.type = 'FxESO';
+    cfg.observer.type = 'LinearESO';
 
     %线性ESO参数:omega
     cfg.observer.linear_omega = 5;
@@ -32,9 +32,17 @@ function cfg = default_config()
     cfg.observer.Fx_k = [3; 1; 5; 2; 4; 1];
 
 
-    % d_hat 微分项符号：+1 或 -1
-    % 如果你确认 Simulink 里 beta3 块就是负号，就设成 -1
-    cfg.observer.beta3_sign = +1;
+    %%分布式观测器参数 'linear' 或 'FxT'
+    cfg.deso.enable = true;
+    cfg.deso.type   = 'FxT'; 
+
+    % 线性 DESO 参数
+    cfg.deso.linear_omega = 7;
+
+    % 固定时间 DESO 参数 (FxT)
+    cfg.deso.fxt_alpha = 0.6;
+    cfg.deso.fxt_beta  = 1.5;
+    cfg.deso.fxt_l = [3; 0.8; 3; 0.8]; % l1, l2, l3, l4;
 
     %% 扰动设置：使用 enable 字段选择启用的扰动类型（可叠加）
     % 阶跃扰动
@@ -90,7 +98,10 @@ function cfg = default_config()
                        1 0];
 
     %% 跟随者-领导者权重矩阵
-    % 这里就体现“不同跟随者有不同的领导者权重”
-    cfg.topology.B  = [1.0 0.8 0.6 0.4;
-                       0.5 1.0 0.9 0.7];
+    % control中 follower-leader 权重
+    cfg.topology.Bc = [1.0 0.8 0.6 0.7;
+                    0.5 1.0 0.9 0.8];
+    % DESO中 follower 是否能直接观测到 leader
+    cfg.topology.Bobs = [1 0 1 0;
+                        0 1 0 1];
 end

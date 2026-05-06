@@ -1,11 +1,11 @@
 function [leaders, followers, topo] = initialize_system(cfg)
 
     %% 拓扑
-    topo.Af = cfg.topology.Af;
-    topo.B  = cfg.topology.B;
-    topo.Nf = cfg.numFollowers;
-    topo.Nl = cfg.numLeaders;
-
+    topo.Af   = cfg.topology.Af;
+    topo.Bc   = cfg.topology.Bc;
+    topo.Bobs = cfg.topology.Bobs;
+    topo.Nf   = cfg.numFollowers;
+    topo.Nl   = cfg.numLeaders;
     %% 创建领导者
     leaders(1) = create_leader( ...
         1, ...

@@ -1,6 +1,5 @@
 function history = run_simulation(cfg)
 
-    %% 初始化
     [leaders, followers, topo] = initialize_system(cfg);
 
     N   = cfg.N;
@@ -22,12 +21,19 @@ function history = run_simulation(cfg)
     history.p_hat      = zeros(dim, Nf, N);
     history.v_hat      = zeros(dim, Nf, N);
 
+    % 新增：记录DESO
+    history.leader_p_hat = zeros(dim, Nf, Nl, N);
+    history.leader_v_hat = zeros(dim, Nf, Nl, N);
+
     %% 主循环
     for k = 1:N
         t = (k-1) * dt;
         history.t(k) = t;
 
-        %% 跟随者更新
+        % ===== 更新所有 follower 对 leader 的 DESO =====
+        followers = deso_update_all(followers, leaders, topo, cfg, dt);
+
+        % ===== 更新每个 follower 的自身控制与本体ESO =====
         for i = 1:Nf
 
             % 1) 控制通道扰动
@@ -65,6 +71,11 @@ function history = run_simulation(cfg)
         for i = 1:Nf
             history.follower_p(:, i, k) = followers(i).p;
             history.follower_v(:, i, k) = followers(i).v;
+
+            for l = 1:Nl
+                history.leader_p_hat(:, i, l, k) = followers(i).deso(l).p_hat;
+                history.leader_v_hat(:, i, l, k) = followers(i).deso(l).v_hat;
+            end
         end
     end
 end
